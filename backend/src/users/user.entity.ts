@@ -30,12 +30,6 @@ export class User {
   @ManyToOne(() => User, (user) => user.supervisor)
   supervisor: User;
 
-  //   @Column({ nullable: true }) // Make supervisor nullable
-  //   supervisorId: number; // Use supervisorId as the foreign key
-
-  //   @ManyToOne(() => User, (user) => user.tasks) // Specify the inverse side
-  //   supervisor: User;
-
   @OneToMany(() => Task, (task) => task.executor)
   tasks: Task[];
 }

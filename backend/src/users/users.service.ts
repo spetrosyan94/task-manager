@@ -15,12 +15,6 @@ export class UsersService {
   async create(userDto: CreateUserDto) {
     const user = this.userRepository.create();
 
-    // const supervisor = user.supervisor
-    //   ? await this.userRepository.findOne({
-    //       where: { id: userDto.supervisor },
-    //     })
-    //   : null;
-
     const supervisor = userDto.supervisor
       ? await this.userRepository.findOneBy({
           id: userDto.supervisor,
