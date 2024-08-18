@@ -1,5 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import * as path from 'path';
 
 export const getMySQLConfig = async (
   configService: ConfigService,
@@ -13,4 +14,9 @@ export const getMySQLConfig = async (
   synchronize: true,
   autoLoadEntities: true,
   logging: true,
+  // entities: [path.join(__dirname, '../database/entities/*.entity.{ts,js}')],
+  migrations: [path.join(__dirname, '../database/migrations/*{.ts,.js}')],
+  subscribers: [
+    path.join(__dirname, '../database/subscribers/*.subscriber.{ts,js}'),
+  ],
 });

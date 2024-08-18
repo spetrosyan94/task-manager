@@ -1,6 +1,22 @@
 version: '3.8'
 
+networks:
+  app-network:
+
 services:
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - './nginx.conf:/etc/nginx/nginx.conf'
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - app-network
+
   backend:
     build: ./backend
     restart: always
@@ -15,6 +31,19 @@ services:
       MYSQL_DATABASE: task-manager
     depends_on:
       - db
+    networks:
+      - app-network
+
+  frontend:
+    build: ./frontend
+    restart: always
+    container_name: task-manager-frontend
+    ports:
+      - '3000:3000'
+    environment:
+      - VITE_APP_BASE_URL=http://localhost:3500
+    depends_on:
+      - backend
     networks:
       - app-network
 
@@ -45,21 +74,5 @@ services:
     networks:
       - app-network
 
-  frontend:
-    build: ./frontend
-    restart: always
-    container_name: task-manager-frontend
-    ports:
-      - '3000:80'
-    environment:
-      - VITE_APP_BASE_URL=http://localhost:3500
-    depends_on:
-      - backend
-    networks:
-      - app-network
-
 volumes:
   db_data:
-
-networks:
-  app-network:
